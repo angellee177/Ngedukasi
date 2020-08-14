@@ -91,4 +91,18 @@ describe('Mentor', () => {
         })
 
     });
+
+    describe('/GET Mentor Routes', () => {
+        it("should show all Mentors, should be OK", function (done) {
+            chai.request(server)
+                .get('api/v1/store')
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.body.should.have.property('success').equal(true);
+                    res.body.should.have.property('message').equal("Here is the Mentor list :");
+                    res.should.be.an("object");
+                    done();
+                });
+        })
+    });
 });

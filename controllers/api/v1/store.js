@@ -1,5 +1,5 @@
 const mongoose  = require('mongoose')
-    , Address   = require('../../../models/Store')
+    , Address   = require('../../../models/Address')
     , Mentor    = require('../../../models/Mentor')
     , { successResponse, errorResponse } = require('../../../helpers/response')
 

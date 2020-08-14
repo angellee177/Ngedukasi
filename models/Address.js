@@ -40,6 +40,6 @@ StoreSchema.pre('save', async function(next) {
     next();
 });
 
-const Address = mongoose.model('Store', StoreSchema);
+const Address = mongoose.model('Address', StoreSchema);
 
 module.exports = Address;

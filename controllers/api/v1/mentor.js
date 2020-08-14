@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
     , Mentor   = require('../../../models/Mentor')
-    , Address  = require('../../../models/Store') 
+    , Address  = require('../../../models/Address') 
     , { successResponse, errorResponse } = require('../../../helpers/response');
 
 exports.newMentor = async (req, res) => {
