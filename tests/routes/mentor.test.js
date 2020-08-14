@@ -7,22 +7,88 @@ const mongoose  = require('mongoose')
 const server  = require('../../index')
     , Mentor  = require("../../models/Mentor")
     , Address = require('../../models/Store')
-    , { seedMentor } = require('../../dataSeed')
+    , { seedMentor, seedAddress } = require('../../dataSeed')
 
 chai.use(chaihttp);
 chai.should();
 
 describe('Mentor', () => {
-    before(done => {
-        Mentor.deleteMany({},
-            { new: true }
-        ).exec(() => {
-            done()
+    describe('Preliminary', () => {
+        before(done => {
+            Mentor.deleteMany({}, 
+                    { new: true }
+                ).exec(() => {
+                    done();
+                })
         });
+        
+        after(done => {
+            Mentor.deleteMany({})
+            .then((result) => {
+                done();
+            })
+        })
     });
 
-    it("Add new Mentor should show OK", function (done) {
-        chai.request(server)
-            .post('/api/v1/') 
+    describe('/POST Mentor Routes', () => {
+        it("Add new Mentor should show OK", function (done) {
+            chai.request(server)
+                .post('/api/v1/mentor/store')
+                .send({
+                    nik        : "21720421",
+                    name       : "Cindy",
+                    education  : "High School",
+                    occupation : "Programmer",
+                    category   : "Front End Class"
+                }) 
+                .end(function (err, res) {
+                    mentorId = res.body.result._id;
+                    res.should.have.status(200);
+                    res.body.should.have.property('success').equal(true);
+                    res.body.should.have.property('message').equal("Success add new Mentor");
+                    res.should.be.an("object");
+                    done();
+                })
+        });
+
+
+        it("Add new Mentor with same NIK should be failed", function (done) {
+            chai.request(server)
+                .post('/api/v1/mentor/store')
+                .send({
+                    nik        : "21720421",
+                    name       : "Fenny",
+                    education  : "Bachelor",
+                    occupation : "Programmer",
+                    category   : "Backend Dev"
+                })
+                .end(function (err, res) {
+                    expect(res).to.have.status(422)
+                    res.body.should.have.property('success').equal(false);
+                    res.body.should.have.property('message').equal("Mentor already on Database");
+                    expect(res).to.be.an('object')
+                    done()
+                })
+        })
+
+        it("Add new Mentor with invalid Input should be failed", function (done) {
+            chai.request(server)
+                .post('/api/v1/mentor/store')
+                .send({
+                    nik        : "21720422",
+                    name       : "Cindy",
+                    education  : "High School",
+                    occupation : "Programmer",
+                    category   : ""
+                })
+                .end(function (err, res) {
+                    expect(res).to.have.status(423)
+                    res.body.should.have.property('success').equal(false);
+                    res.body.should.have.property('message').equal("Request is not quite right");
+                    expect(res).to.be.an('object')
+                    done()
+                })
+        })
+
     });
 });

@@ -72,8 +72,10 @@ async function seedAddress() {
                 ).exec()
             }
             console.log("Address have been add for Budi");
-            
+
     } catch (err) {
         console.log(err.message);
     }
 }
+
+module.exports = { seedMentors, seedAddress }
