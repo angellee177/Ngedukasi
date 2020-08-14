@@ -27,13 +27,16 @@ exports.getStores = async (req, res) => {
 
 exports.addLocation = async (req, res) => {
     try {
-            const findMentor = await Mentor.findById(req.body.mentor_id);
+            const mentor = await Mentor.findById(req.body.mentor_id);
             if(!findMentor) return res.status(422).json(errorResponse("Failed to find Mentor"));
 
-            const newAddress = await Address.create({
+            const address = new Address({
                 mentor_id: req.body.mentor_id,
                 address: req.body.address,
             });
+            await newAddress.save();
+            await mentor.address.push(address);
+            await mentor.save();
             
             return res.status(200).json(successResponse("Success add new Address", newAddress));
     }catch (err) {
