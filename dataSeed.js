@@ -1,6 +1,6 @@
 const faker   = require('faker')
     , Mentor  = require('./models/Mentor')
-    , Address = require('./models/Store')
+    , Address = require('./models/Address')
 
 async function seedMentors() {
     try {

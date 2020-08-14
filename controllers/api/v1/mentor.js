@@ -37,6 +37,8 @@ exports.deleteMentorById = async (req, res) => {
         let mentor = await Mentor.findById(req.params.id);
         if(!mentor) return res.status(404).json(errorResponse("Mentor does not exist"));
 
+        let address = await Address.findOne({mentor_id: req.params.id })
+    
         await Address.deleteMany({ mentor_id: req.params.id });
         await Mentor.deleteOne({ _id: req.params.id });
         return res.status(200).json(successResponse("Delete Mentor is Success"));
@@ -65,4 +67,20 @@ exports.getMentorById = async (req, res) => {
 }
 
 
+exports.getMentorByName = async (req, res) => {
+    try {
+        let mentor = await Mentor
+            .findOne({name : req.body.name })
+            .populate({
+                path: 'address',
+                select: 'address location',
+            }).sort({
+                name: -1
+            });
+        if(!mentor) return res.status(422).json(errorResponse("cannot find Mentor"));
+        return res.status(200).json(successResponse("Here is the mentor Detail: ", mentor));
+    }catch (err){
+        return res.status(423).json(errorResponse("Something went wrong when get mentor data.", err));
+    }
+}
 

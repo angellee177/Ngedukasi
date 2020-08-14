@@ -6,6 +6,9 @@ router.route('/store')
     .get(mentorCtrl.showMentorList)
     .post(mentorCtrl.newMentor)
 
+router.route('/find')
+    .get(mentorCtrl.getMentorByName);
+
 router.route('/find/:id')
     .get(mentorCtrl.getMentorById)
     .delete(mentorCtrl.deleteMentorById)

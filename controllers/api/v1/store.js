@@ -6,7 +6,7 @@ const mongoose  = require('mongoose')
 
 exports.getAddressById = async (req, res) => {
     try {
-        const location = await Address.findById({mentor_id : req.params.id}).populate('mentor_id', 'name').sort({ created_at: -1});
+        const location = await Address.findById(req.params.id).populate('mentor_id', 'name').sort({ created_at: -1});
 
         if(!location) return res.status(422).json("cannot find ")
     } catch (err) {
@@ -27,18 +27,21 @@ exports.getStores = async (req, res) => {
 
 exports.addLocation = async (req, res) => {
     try {
+
             const mentor = await Mentor.findById(req.body.mentor_id);
             if(!findMentor) return res.status(422).json(errorResponse("Failed to find Mentor"));
 
-            const address = new Address({
+            const address = await Address.create({
                 mentor_id: req.body.mentor_id,
                 address: req.body.address,
             });
-            await newAddress.save();
-            await mentor.address.push(address);
-            await mentor.save();
+            console.log(address);
+            await mentor.address.push(address); 
+            const newData = await mentor.save();
+
+            console.log(newData);
             
-            return res.status(200).json(successResponse("Success add new Address", newAddress));
+            return res.status(200).json(successResponse("Success add new Address", address));
     }catch (err) {
         return res.status(423).json(errorResponse("Request is not quite right", err));
     }
