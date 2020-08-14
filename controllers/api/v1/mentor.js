@@ -2,8 +2,6 @@ const mongoose = require('mongoose')
     , Mentor   = require('../../../models/Mentor')
     , Address  = require('../../../models/Store') 
     , { successResponse, errorResponse } = require('../../../helpers/response');
-const { errorMessage } = require('../../../../ecommerce/helper/response');
-
 
 exports.newMentor = async (req, res) => {
     try{

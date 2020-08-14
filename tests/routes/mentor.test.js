@@ -12,4 +12,17 @@ const server  = require('../../index')
 chai.use(chaihttp);
 chai.should();
 
+describe('Mentor', () => {
+    before(done => {
+        Mentor.deleteMany({},
+            { new: true }
+        ).exec(() => {
+            done()
+        });
+    });
 
+    it("Add new Mentor should show OK", function (done) {
+        chai.request(server)
+            .post('/api/v1/') 
+    });
+});
