@@ -29,7 +29,6 @@ exports.getStores = async (req, res) => {
 
 exports.addLocation = async (req, res) => {
     try {
-
             let mentor = await Mentor.findById(req.body.mentor_id);
 
             if(!mentor){
@@ -39,7 +38,8 @@ exports.addLocation = async (req, res) => {
                 let newAddress = new Address({
                     mentor_id: req.body.mentor_id,
                     address: req.body.address,
-                    country: req.body.country,
+                    zipcode: req.body.zipcode,
+                    countryCode: req.body.countryCode,
                 });
 
                 await newAddress.save();

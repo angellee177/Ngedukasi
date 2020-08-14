@@ -24,7 +24,7 @@ const MentorSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please input your Lesson category'],
     },
-    address: [{type: mongoose.Schema.Types.ObjectId, ref: 'Address'}]
+    address: { type: mongoose.Schema.Types.ObjectId, ref: "Address"}
 });
 
 
