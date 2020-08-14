@@ -6,9 +6,11 @@ const mongoose  = require('mongoose')
 
 exports.getAddressById = async (req, res) => {
     try {
-        const location = await Address.findById(req.params.id).populate('mentor_id', 'name').sort({ created_at: -1});
+        const location = await Address.findById(req.params.id).populate('mentor_id', 'name');
 
-        if(!location) return res.status(422).json("cannot find ")
+        if(!location) return res.status(422).json("cannot find ");
+
+        return res.status(200).json(successResponse("Success get Address by ID", location));
     } catch (err) {
         return res.status(423).json(errorResponse("Request is not quite right", err));
     }
@@ -28,20 +30,26 @@ exports.getStores = async (req, res) => {
 exports.addLocation = async (req, res) => {
     try {
 
-            const mentor = await Mentor.findById(req.body.mentor_id);
-            if(!findMentor) return res.status(422).json(errorResponse("Failed to find Mentor"));
+            let mentor = await Mentor.findById(req.body.mentor_id);
 
-            const address = await Address.create({
-                mentor_id: req.body.mentor_id,
-                address: req.body.address,
-            });
-            console.log(address);
-            await mentor.address.push(address); 
-            const newData = await mentor.save();
+            if(!mentor){
+                return res.status(422).json("Failed to find Mentor");
+            }else{
 
-            console.log(newData);
-            
-            return res.status(200).json(successResponse("Success add new Address", address));
+                let newAddress = new Address({
+                    mentor_id: req.body.mentor_id,
+                    address: req.body.address,
+                    country: req.body.country,
+                });
+
+                await newAddress.save();
+                await Mentor.updateOne(
+                    { _id: req.body.mentor_id },
+                    { $push: { address: newAddress._id } }
+                )
+                    
+                return res.status(200).json(successResponse("Success add new Address", newAddress));
+            }
     }catch (err) {
         return res.status(423).json(errorResponse("Request is not quite right", err));
     }

@@ -6,6 +6,7 @@ const path        = require('path')
     , cors        = require('cors')
     , mongoose    = require('mongoose')
     , router      = require('./routes/index')
+    , { seedMentors, seedAddress } = require('./dataSeed');
 
 dotenv.config({ path: './config/config.env'}); 
 
@@ -27,6 +28,13 @@ if(env === "development" || env === "test") {
     require('dotenv').config({ path: './config.env'})
 }
 
+// database seeding
+if (env == 'production') {
+    seedMentors()
+  } else if (env == 'development') {
+    seedMentors()
+      .then(() => seedAddress())
+  }
 
 // Database Connection 
 mongoose.set('useCreateIndex', true)

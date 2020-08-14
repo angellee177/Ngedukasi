@@ -8,6 +8,10 @@ const StoreSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please add an address']
     },
+    country: {
+        type: String,
+        required: [true, 'Please add your Country']
+    },
     location: {
         type: {
             type: String, 
@@ -28,7 +32,7 @@ const StoreSchema = new mongoose.Schema({
 
 // Geocode & create Location
 StoreSchema.pre('save', async function(next) {
-    const loc = await geocoder.geocode(this.address);
+    const loc = await geocoder.geocode(this.address, this.country);
     this.location = {
       type: 'Point',
       coordinates: [loc[0].longitude, loc[0].latitude],
@@ -36,7 +40,7 @@ StoreSchema.pre('save', async function(next) {
     };
   
     // Do not save address
-    this.address = undefined;
+    // this.address = undefined;
     next();
 });
 

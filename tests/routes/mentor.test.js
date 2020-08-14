@@ -7,7 +7,7 @@ const mongoose  = require('mongoose')
 const server  = require('../../index')
     , Mentor  = require("../../models/Mentor")
     , Address = require('../../models/Address')
-    , { seedMentor, seedAddress } = require('../../dataSeed')
+    , { seedMentor, seedAddress } = require('../../dataSeed');
 
 chai.use(chaihttp);
 chai.should();
@@ -15,14 +15,15 @@ chai.should();
 describe('Mentor', () => {
     describe('Preliminary', () => {
         before(done => {
-            Mentor.deleteMany({}, 
-                    { new: true }
-                ).exec(() => {
-                    done();
-                })
+            Mentor.deleteMany({})
+            .then(() => {
+                seedMentor()
+                seedAddress()
+                    .then(() => done())
+            });
         });
         
-        after(done => {
+        afterEach(done => {
             Mentor.deleteMany({})
             .then((result) => {
                 done();
@@ -98,8 +99,8 @@ describe('Mentor', () => {
                 .get('api/v1/mentor/store')
                 .end(function (err, res) {
                     res.should.have.status(200);
-                    // res.body.should.have.property('success').equal(true);
-                    // res.body.should.have.property('message').equal("Here is the Mentor list :");
+                    res.body.should.have.property('success').equal(true);
+                    res.body.should.have.property('message').equal("Here is the Mentor list :");
                     res.should.be.an("object");
                     done();
                 });

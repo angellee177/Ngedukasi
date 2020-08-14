@@ -15,7 +15,8 @@ async function seedMentors() {
                     occupation: "HighSchool Teacher",
                     category  : "Biology"
                 })
-                await Mentor.save(mentorData)
+                let mentor = new Mentor(mentorData);
+                await mentor.save();
         
                 const mentorData1 = new Mentor({
                     nik       : "21720422",
@@ -24,7 +25,8 @@ async function seedMentors() {
                     occupation: "Software Developer",
                     category  : "Android Dev"
                 })
-                await Mentor.save(mentorData1)
+                let mentor1 = new Mentor(mentorData1);
+                await mentor1.save();
 
                 console.log("2 new Mentors created.");
             }
@@ -44,7 +46,8 @@ async function seedAddress() {
                 const address     = faker.address.streetAddress();
                 const addressData = {
                     mentor_id : mentor._id,
-                    address
+                    address,
+                    country: faker.address.country(),
                 }
                 let location = new Address(addressData);
                 await location.save();
@@ -61,7 +64,8 @@ async function seedAddress() {
                 const address     = faker.address.streetAddress();
                 const addressData = {
                     mentor_id : mentor2._id,
-                    address
+                    address,
+                    country: faker.address.country(),
                 }
                 let location = new Address(addressData);
                 await location.save();
