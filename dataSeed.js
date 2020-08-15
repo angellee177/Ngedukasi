@@ -79,7 +79,7 @@ async function seedCourse() {
             let mentor2       = await Mentor.findOne({name : 'budi'});
             let courseExist  = await Mentor.findOne({name : 'ani', course: { $gt: [] } });
             let courseExist2 = await Mentor.findOne({name : 'budi', course: { $gt: [] } });
-        console.log(mentor, mentor2);
+    
             if( mentor && !courseExist) {
                 for( const i of new Array(5)) {
                     const title       = faker.lorem.sentence();
@@ -136,7 +136,7 @@ async function seedAddress() {
         let mentor2       = await Mentor.findOne({name : 'budi'});
         let addressExist  = await Mentor.findOne({name : 'ani', address: { $gt: [] } });
         let addressExist2 = await Mentor.findOne({name : 'budi', address: { $gt: [] } });
-        console.log(mentor, mentor2);
+    
         if(!mentor && !addressExist ) {
             const addressData = new Addresss({
                 mentor_id   : mentor._id,
