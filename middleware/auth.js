@@ -8,7 +8,6 @@ exports.auth = (req, res, next) => {
     if (token) {
         try {
             const decoded = jwt.verify(token, config.get('jwtPrivateKey'));
-            console.log(decoded);
 
             req.decoded = decoded
             userId      = decoded._id;

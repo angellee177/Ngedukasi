@@ -82,7 +82,7 @@ exports.uploadCoursesPicture = async (req, res) => {
             }
             
             if (course.media.public_id) await cloudinary.v2.uploader.destroy(course.media.public_id);
-            console.log(req.file);
+
             const { secure_url , public_id } = {secure_url: req.file.path , public_id: req.file.filename };
             course.media = { secure_url, public_id };
             let result = await course.save();
