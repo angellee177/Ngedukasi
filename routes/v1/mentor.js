@@ -1,10 +1,11 @@
 const express    = require('express')
     , router     = express.Router()
     , mentorCtrl = require('../../controllers/api/v1/mentor')
+    , auth       = require('../../middleware/auth')     
 
 router.route('/store')
     .get(mentorCtrl.showMentorList)
-    .post(mentorCtrl.newMentor)
+    .post(auth.auth, mentorCtrl.newMentor)
 
 router.route('/find')
     .get(mentorCtrl.getMentorByName);

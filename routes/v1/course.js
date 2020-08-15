@@ -4,12 +4,13 @@ const express     = require('express')
     , multer      = require('multer')
     , { storage } = require('../../config/cloudinaryConfig')
     , upload      = multer({ storage })
+    , auth        = require('../../middleware/auth')
 
 router.route('/upload/:id')
-    .post(upload.single('image'), courseCtrl.uploadCoursesPicture);
+    .post( auth.auth, upload.single('image'), courseCtrl.uploadCoursesPicture);
 router.route('/store')
-    .get(courseCtrl.getCourses)
-    .post(courseCtrl.newCourse)
+    .get( courseCtrl.getCourses)
+    .post( auth.auth , courseCtrl.newCourse)
 
 router.route('/find/:id')
     .get(courseCtrl.getCourseById)

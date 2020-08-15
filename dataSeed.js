@@ -1,19 +1,55 @@
 const faker   = require('faker')
     , Mentor  = require('./models/Mentor')
     , Course  = require('./models/Course')
+    , User    = require('./models/User')
+
+async function seedUsers() {
+    try {
+        let password   = 'Password@123'
+        let userExist  = await User.findOne({ email: 'ani@yopmail.com'});
+        let userExist2 = await User.findOne({ email: 'budi@yopmail.com'});
+
+        if(!userExist && !userExist2) {
+            const userData = new User({
+                username: 'Ani ajjah',
+                email: 'ani@yopmail.com',
+                user_type: '1',
+                password: password,
+            })
+            await userData.save();
+
+            const userData2 = new User({
+                username: 'Budi brohh',
+                email: 'budi@yopmail.com',
+                user_type: '1',
+                password: password,
+            })
+            await userData2.save();
+
+            console.log('2 new Users created');
+        }  
+
+    } catch (err) {
+        console.log(err.message);
+    }
+}
 
 async function seedMentors() {
-    try {
+    try {   
+            let user  = await User.findOne({ username: 'ani ajjah'});
+            let user1 = await User.findOne({ username: 'budi brohh'});
             let mentorExist  = await Mentor.findOne({ nik: '21720421'});
             let mentorExist1 = await Mentor.findOne({ nik: '21720422'});
-
+  
             if(!mentorExist && !mentorExist1 ) {
                 const mentorData = new Mentor({
                     nik       : "21720421",
                     name      : "Ani",
                     education : "Bachelor Degree",
                     occupation: "HighSchool Teacher",
-                    category  : "Biology"
+                    category  : "Biology",
+                    user_id   : user._id,
+
                 })
                 let mentor = new Mentor(mentorData);
                 await mentor.save();
@@ -23,7 +59,8 @@ async function seedMentors() {
                     name      : "Budi",
                     education : "Master Degree",
                     occupation: "Software Developer",
-                    category  : "Android Dev"
+                    category  : "Android Dev",
+                    user_id   : user1._id,
                 })
                 let mentor1 = new Mentor(mentorData1);
                 await mentor1.save();
@@ -92,4 +129,4 @@ async function seedCourse() {
     }
 }
 
-module.exports = { seedMentors, seedCourse }
+module.exports = { seedUsers, seedMentors, seedCourse }

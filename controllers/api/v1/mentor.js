@@ -12,7 +12,8 @@ exports.newMentor = async (req, res) => {
             name: req.body.name,
             education: req.body.education,
             occupation: req.body.occupation,
-            category: req.body.category
+            category: req.body.category,
+            user_id: userId,
         })
 
         if(!newMentor) return res.status(422).json(errorResponse("Failed to add new Mentor"));
