@@ -54,11 +54,11 @@ exports.deleteUser = async (req, res) => {
         const user = await User.findById(req.params.id);
         if(!user) return res.status(421).json(errorResponse("Sorry, we cannnot find user data."));
 
-        const mentor = Mentor.find({ userId: userId });
+        const mentor = Mentor.find({ user_id: req.params.id });
         await Course.deleteMany({ mentor: mentor._id });
         await Address.deleteOne({ mentor_id: mentor._id });
-        await Mentor.deleteOne({ user_id: userId });
-        await User.deleteOne({ _id: userId });
+        await Mentor.deleteOne({ user_id: req.params.id });
+        await User.deleteOne({ _id: req.params.id });
         
         return res.status(200).json(successResponse(`Yeayy! you are successfully delete ${user.name}`));
     } catch (err) {

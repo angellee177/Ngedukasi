@@ -1,7 +1,8 @@
-const faker   = require('faker')
-    , Mentor  = require('./models/Mentor')
-    , Course  = require('./models/Course')
-    , User    = require('./models/User')
+const faker    = require('faker')
+    , Mentor   = require('./models/Mentor')
+    , Course   = require('./models/Course')
+    , User     = require('./models/User')
+    , Addresss = require('./models/Address')
 
 async function seedUsers() {
     try {
@@ -40,7 +41,7 @@ async function seedMentors() {
             let user1 = await User.findOne({ username: 'budi brohh'});
             let mentorExist  = await Mentor.findOne({ nik: '21720421'});
             let mentorExist1 = await Mentor.findOne({ nik: '21720422'});
-  
+   
             if(!mentorExist && !mentorExist1 ) {
                 const mentorData = new Mentor({
                     nik       : "21720421",
@@ -78,7 +79,7 @@ async function seedCourse() {
             let mentor2       = await Mentor.findOne({name : 'budi'});
             let courseExist  = await Mentor.findOne({name : 'ani', course: { $gt: [] } });
             let courseExist2 = await Mentor.findOne({name : 'budi', course: { $gt: [] } });
-
+        console.log(mentor, mentor2);
             if( mentor && !courseExist) {
                 for( const i of new Array(5)) {
                     const title       = faker.lorem.sentence();
@@ -129,4 +130,38 @@ async function seedCourse() {
     }
 }
 
-module.exports = { seedUsers, seedMentors, seedCourse }
+async function seedAddress() {
+    try {
+        let mentor        = await Mentor.findOne({name : 'ani'});
+        let mentor2       = await Mentor.findOne({name : 'budi'});
+        let addressExist  = await Mentor.findOne({name : 'ani', address: { $gt: [] } });
+        let addressExist2 = await Mentor.findOne({name : 'budi', address: { $gt: [] } });
+        console.log(mentor, mentor2);
+        if(!mentor && !addressExist ) {
+            const addressData = new Addresss({
+                mentor_id   : mentor._id,
+                address     : "Kopkar PLN Housing Batam Centre, Jl. Orchard Boulevard, Belian, Batam Kota, Batam City, Riau Islands 29444, Indonesia",
+                zipcode     : "29444",
+                countryCode : "ID",
+            })
+            let address = new Addresss(addressData);
+            await address.save();
+        }
+
+        if(mentor2 && !addressExist2){
+            const addressData1 = new Addresss({
+                mentor      : mentor2._id,
+                address     : "Masjid Al Hidayah, PLN, PERUMAHAN KOPKAR PLN BLOK H NO.8 Kel. Belian Kecamatan Batam Kota Depan Masjid Jami Kopkar, Belian, Kec. Batam Kota, Kota Batam, Kepulauan Riau 29432",
+                zipcode     : "29432",
+                countryCode : "ID",
+            })
+            let address1 = new Addresss(addressData1);
+            await address1.save();
+        }
+        console.log("2 new Address created.");
+    } catch (err) {
+        console.log(err.message);
+    }
+}
+
+module.exports = { seedUsers, seedMentors, seedCourse, seedAddress }
