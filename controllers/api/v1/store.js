@@ -1,5 +1,4 @@
-const mongoose  = require('mongoose')
-    , Address   = require('../../../models/Address')
+const Address   = require('../../../models/Address')
     , Mentor    = require('../../../models/Mentor')
     , { successResponse, errorResponse } = require('../../../helpers/response')
 

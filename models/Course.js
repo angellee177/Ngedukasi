@@ -15,7 +15,7 @@ const CourseSchema = new mongoose.Schema({
         min: 5
     },
     media: {
-        secure_url: { type: String, default: 'https://api.cloudinary.com/v1_1/dq8wjyayh/image/upload' },
+        secure_url: { type: String, default: '' },
         public_id: String
     },
     upload_date: {

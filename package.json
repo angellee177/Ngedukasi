@@ -25,6 +25,7 @@
   "license": "ISC",
   "dependencies": {
     "@hapi/joi": "^17.1.1",
+    "bcryptjs": "^2.4.3",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
     "cloudinary": "^1.22.0",
@@ -36,6 +37,7 @@
     "express": "^4.17.1",
     "faker": "^4.1.0",
     "http-errors": "^1.8.0",
+    "jsonwebtoken": "^8.5.1",
     "mocha": "^8.1.1",
     "mongoose": "^5.9.29",
     "mongoose-paginate-v2": "^1.3.9",
