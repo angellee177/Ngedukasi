@@ -6,7 +6,7 @@ const path        = require('path')
     , cors        = require('cors')
     , mongoose    = require('mongoose')
     , router      = require('./routes/index')
-    , { seedMentors, seedAddress } = require('./dataSeed');
+    , { seedMentors, seedCourse } = require('./dataSeed');
 
 dotenv.config({ path: './config/config.env'}); 
 
@@ -33,7 +33,7 @@ if (env == 'production') {
     seedMentors()
   } else if (env == 'development') {
     seedMentors()
-      .then(() => seedAddress())
+      .then(() => seedCourse())
   }
 
 // Database Connection 

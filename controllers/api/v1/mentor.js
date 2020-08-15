@@ -26,7 +26,8 @@ exports.newMentor = async (req, res) => {
 
 
 exports.showMentorList = async (req, res) => {
-    let mentorList = await Mentor.find({}).populate('address', 'location').sort({ name: -1});
+    let populateQuery = [{ path: 'address', select: 'location'}, { path: 'course', select: 'title'}];
+    let mentorList = await Mentor.find({}).populate(populateQuery).sort({ name: -1});
 
     return res.status(200).json(successResponse("Here is the Mentor list :", mentorList));
 }
@@ -51,12 +52,10 @@ exports.deleteMentorById = async (req, res) => {
 
 exports.getMentorById = async (req, res) => {
     try {
+        let populateQuery = [{ path: 'address', select: 'location'}, { path: 'course', select: 'title' }]
         let mentor = await Mentor
             .findById(req.params.id)
-            .populate({
-                path: 'address',
-                select: 'address location',
-            }).sort({
+            .populate(populateQuery).sort({
                 name: -1
             });
         if(!mentor) return res.status(422).json(errorResponse("cannot find Mentor"));

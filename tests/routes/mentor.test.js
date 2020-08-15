@@ -7,7 +7,7 @@ const mongoose  = require('mongoose')
 const server  = require('../../index')
     , Mentor  = require("../../models/Mentor")
     , Address = require('../../models/Address')
-    , { seedMentor, seedAddress } = require('../../dataSeed');
+    , { seedMentor, seedCourse } = require('../../dataSeed');
 
 chai.use(chaihttp);
 chai.should();
@@ -18,7 +18,7 @@ describe('Mentor', () => {
             Mentor.deleteMany({})
             .then(() => {
                 seedMentor()
-                seedAddress()
+                seedCourse()
                     .then(() => done())
             });
         });

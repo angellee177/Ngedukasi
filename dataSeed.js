@@ -1,6 +1,6 @@
 const faker   = require('faker')
     , Mentor  = require('./models/Mentor')
-    , Address = require('./models/Address')
+    , Course  = require('./models/Course')
 
 async function seedMentors() {
     try {
@@ -35,51 +35,61 @@ async function seedMentors() {
     }
 }
 
-async function seedAddress() {
+async function seedCourse() {
     try {
             let mentor        = await Mentor.findOne({name : 'ani'});
             let mentor2       = await Mentor.findOne({name : 'budi'});
-            let addressExist  = await Mentor.findOne({name : 'ani', address: { $gt: [] } });
-            let addressExist2 = await Mentor.findOne({name : 'budi', address: { $gt: [] } });
+            let courseExist  = await Mentor.findOne({name : 'ani', course: { $gt: [] } });
+            let courseExist2 = await Mentor.findOne({name : 'budi', course: { $gt: [] } });
 
-            if( mentor && !addressExist) {
-                const address     = faker.address.streetAddress();
-                const addressData = {
-                    mentor_id : mentor._id,
-                    address,
-                    country: faker.address.country(),
+            if( mentor && !courseExist) {
+                for( const i of new Array(5)) {
+                    const title       = faker.lorem.sentence();
+                    const description = faker.lorem.text();
+        
+                    const courseData = {
+                        mentor : mentor._id,
+                        title,
+                        description,
+                    }
+                    let course = new Course(courseData);
+                    await course.save();
+
+                    Mentor.updateOne(
+                        { _id: mentor._id},
+                        { $push: { course: course._id } }
+                    ).exec()
                 }
-                let location = new Address(addressData);
-                await location.save();
-
-                Mentor.updateOne(
-                    { _id: mentor._id},
-                    { $push: { address: location._id} }
-                ).exec()
+                console.log("Course have been add for Ani");
             }
 
-            console.log("Address have been add for Ani");
+        
 
-            if( mentor2 && !addressExist2) {
-                const address     = faker.address.streetAddress();
-                const addressData = {
-                    mentor_id : mentor2._id,
-                    address,
-                    country: faker.address.country(),
+            if( mentor2 && !courseExist2) {
+                for( const i of new Array(5)) {
+                    const title       = faker.lorem.sentence();
+                    const description = faker.lorem.text();
+    
+                    const courseData2 = {
+                        mentor : mentor2._id,
+                        title,
+                        description
+                    }
+                    let course2 = new Course(courseData2);
+                    await course2.save();
+    
+                    Mentor.updateOne(
+                        { _id: mentor2._id},
+                        { $push: { course: course2._id} }
+                    ).exec()
                 }
-                let location = new Address(addressData);
-                await location.save();
-
-                Mentor.updateOne(
-                    { _id: mentor2._id},
-                    { $push: { address: location._id} }
-                ).exec()
+                console.log("Course have been add for Budi");
             }
-            console.log("Address have been add for Budi");
+            
 
     } catch (err) {
         console.log(err.message);
     }
 }
 
-module.exports = { seedMentors, seedAddress }
+module.exports = { seedMentors, seedCourse }
