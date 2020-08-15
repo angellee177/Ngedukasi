@@ -2,14 +2,13 @@ const express        = require('express')
     , router         = express.Router()
     , userController = require('../../controllers/api/v1/user')
     , auth           = require ('../../middleware/auth')
-    , permission     = require('../../middleware/permission')
 
 router.route('/')
     .post(userController.postRegister)
     .get(auth.auth, userController.getUserList)
 
 router.route('/find/:id')
-    .delete(auth.auth, permission.isAdmin, userController.deleteUser)
+    .delete(auth.auth, userController.deleteUser)
     .get(userController.getUserById)
 
 router.route('/login')

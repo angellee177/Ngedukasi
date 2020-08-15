@@ -68,7 +68,7 @@ exports.deleteUser = async (req, res) => {
 
 exports.currentUser = async (req, res) => {
     try {
-        let user = await User.findById(req.user._id);
+        let user = await User.findById(userId);
         return res.status(200).json(successResponse("Current login Information is: ", user));
     } catch (err) {
         return res.status(423).json(errorResponse("Request is not quite right"));
@@ -90,7 +90,7 @@ exports.updateUser = async (req, res) => {
 
 exports.getUserById = async (req, res) => {
     try {
-        let user = await User.findById(req.params.userId);
+        let user = await User.findById(req.params.id);
         if(!user) return res.status(422).json(errorResponse("Sorry, we cannot find your data"));
 
         return res.status(200).json(successResponse("Yeayy ! here is your detail informations", user));
